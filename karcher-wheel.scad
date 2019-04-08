@@ -5,8 +5,8 @@ hub_thick = gear_thick + 16;
 main_d = 60;
 ext_d = 170;
 washer_d = 25;
-border_h = 16*1.5;
-border_w = 0.4*6;
+border_h = 16*1.2;
+border_w = 0.4*4;
 plate_h = 4;
 
 inside_hole_d = 12;
@@ -129,9 +129,11 @@ module wheel(base=true, gear=true, reduce_weight=true) {
                     border();
                 translate([0, 0, -plate_h])
                     plate();
-                repeat_round(12)
-                    translate([0, (ext_d*3/4+3)/2, -border_h/2])
-                        cylinder(h=border_h/2, d=reducer_hole_d+border_w*2);
+                if (reduce_weight) {
+                    repeat_round(12)
+                        translate([0, (ext_d*3/4+3)/2, -border_h/2])
+                            cylinder(h=border_h/2, d=reducer_hole_d+border_w*2);
+                }
             }
             if (reduce_weight) {
                 repeat_round(12)
