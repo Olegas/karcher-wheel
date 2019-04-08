@@ -90,11 +90,7 @@ module plate() {
                     cylinder(h=plate_h+mc, d=3);
                 }                    
         }
-        for(i=[1:12]) {
-            rotate([0, 0, 360/12*i]) 
-                translate([0, (ext_d*3/4+3)/2, -mc/2])
-                    cylinder(h=plate_h+mc, d=22);
-        }
+        
     }
 }
 
@@ -126,13 +122,24 @@ module washer_placement() {
     cylinder(h=4+mc, d=washer_d*grow);
 }
 
-module wheel(base=true, gear=true) {
+module wheel(base=true, gear=true, reduce_weight=true) {
 
     if (base) {
-        translate([0, 0, -border_h/2])
-            border();
-        translate([0, 0, -plate_h])
-            plate();
+        difference() {
+            union() {
+                translate([0, 0, -border_h/2])
+                    border();
+                translate([0, 0, -plate_h])
+                    plate();
+            }
+            if (reduce_weight) {
+                for(i=[1:12]) {
+                    rotate([0, 0, 360/12*i]) 
+                        translate([0, (ext_d*3/4+3)/2, -border_h/2-mc/2])
+                            cylinder(h=border_h+mc, d=22);
+                }
+            }
+        }
     }
     if (gear) {
         wheel_gear();
